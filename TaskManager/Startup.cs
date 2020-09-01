@@ -64,6 +64,8 @@ namespace TaskManager
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
+                    // USEFUL FOR SEPARATING SERVER - CLIENT COMPILATION
+                    // spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
         }
