@@ -7,13 +7,24 @@ export class Task extends Component {
   constructor(props) {
     super(props);
     this.state = { tasks: [], loading: true };
+    this.deleteAction = this.deleteAction.bind(this);
   }
 
   componentDidMount() {
     this.populateTasksData();
   }
 
-  static renderTasksTable(tasks) {
+  deleteAction(id) {
+    fetch(`api/tasks/${id}`, { method: 'DELETE' }).then((response) => {
+      if (response.ok) {
+        this.setState({ tasks: this.state.tasks.filter((t) => t.id !== id) });
+      } else {
+        console.error('Something went wrong');
+      }
+    });
+  }
+
+  renderTasksTable(tasks) {
     return (
       <table className='table table-striped' aria-labelledby='tabelLabel'>
         <thead>
@@ -31,10 +42,20 @@ export class Task extends Component {
               <td>{task.details}</td>
               <td>
                 <Link to={`tasks/task/${task.id}`}>
-                  <button type="button" className="btn btn-primary">E</button>
+                  <button type='button' className='btn btn-primary'>
+                    E
+                  </button>
                 </Link>
               </td>
-              <td></td>
+              <td>
+                <button
+                  type='button'
+                  className='btn btn-primary'
+                  onClick={() => this.deleteAction(task.id)}
+                >
+                  D
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -48,7 +69,7 @@ export class Task extends Component {
         <em>Loading...</em>
       </p>
     ) : (
-      Task.renderTasksTable(this.state.tasks)
+      this.renderTasksTable(this.state.tasks)
     );
 
     return (

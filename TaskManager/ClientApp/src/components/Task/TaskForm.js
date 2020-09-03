@@ -1,21 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 export function TaskForm() {
-  const { id } = useParams();
   const history = useHistory();
+  const { id } = useParams();
   const { register, handleSubmit, errors } = useForm();
+
+  const [data, setData] = useState();
+  useEffect(() => {
+    async function fetchData(id) {
+      const response = await fetch(`api/tasks/${id}`);
+      const data = await response.json();
+      setData(data);
+    }
+    if (!!id) fetchData(id);
+  }, [id]);
+
   const onSubmit = (data) => {
+    if (!!id) data.id = id;
     // POST request using fetch with error handling
     const requestOptions = {
-      method: 'POST',
+      method: !!id ? 'PUT' : 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     };
-    fetch('/api/tasks', requestOptions)
+    fetch(`/api/tasks${!!id ? `/${id}` : ''}`, requestOptions)
       .then(async (response) => {
-        const data = await response.json();
+        // const data = await response.json();
 
         // check for error response
         if (!response.ok) {
@@ -43,7 +55,6 @@ export function TaskForm() {
           </ul>
         </div>
       )}
-      <p>Id: {id}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='form-group'>
           <label htmlFor='title'>Title</label>
@@ -54,6 +65,7 @@ export function TaskForm() {
             id='title'
             placeholder='Title'
             ref={register({ required: 'Title field is required' })}
+            defaultValue={(!!data && data.title) || ''}
           />
         </div>
 
@@ -65,6 +77,7 @@ export function TaskForm() {
             id='details'
             rows='3'
             ref={register({ required: 'Details field is required' })}
+            defaultValue={(!!data && data.details) || ''}
           ></textarea>
         </div>
 

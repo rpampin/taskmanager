@@ -19,7 +19,7 @@ export class App extends Component {
           <Route path='/counter' component={Counter} />
           <Route path='/fetch-data' component={FetchData} />
           <Route exact path='/tasks' component={Task} />
-          <Route path='/tasks/task/:id?' component={TaskForm} />
+          <Route exact path='/tasks/task/:id?' component={TaskForm} />
         </Switch>
       </Layout>
     );

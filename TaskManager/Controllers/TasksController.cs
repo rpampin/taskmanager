@@ -8,8 +8,8 @@ using TaskManager.Data;
 
 namespace TaskManager.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class TasksController : ControllerBase
     {
         private readonly ApplicationContext _context;
