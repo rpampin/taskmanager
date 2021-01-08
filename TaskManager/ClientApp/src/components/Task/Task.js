@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import {} from './Task.css';
+import { Pen, Trash } from 'react-bootstrap-icons';
+
 export class Task extends Component {
   static displayName = Task.name;
 
@@ -31,8 +34,8 @@ export class Task extends Component {
           <tr>
             <th>Title</th>
             <th>Details</th>
-            <th></th>
-            <th></th>
+            <th style={{width: '5%'}}></th>
+            <th style={{width: '5%'}}></th>
           </tr>
         </thead>
         <tbody>
@@ -42,18 +45,18 @@ export class Task extends Component {
               <td>{task.details}</td>
               <td>
                 <Link to={`tasks/task/${task.id}`}>
-                  <button type='button' className='btn btn-primary'>
-                    E
+                  <button type='button' className='btn btn-outline-dark'>
+                    <Pen />
                   </button>
                 </Link>
               </td>
               <td>
                 <button
                   type='button'
-                  className='btn btn-primary'
+                  className='btn btn-outline-dark'
                   onClick={() => this.deleteAction(task.id)}
                 >
-                  D
+                  <Trash />
                 </button>
               </td>
             </tr>
